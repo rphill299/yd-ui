@@ -1,1 +1,1 @@
-pyinstaller --onefile --windowed --add-binary "ffmpeg/ffmpeg.exe;ffmpeg" yd-ui.py
+pyinstaller --onefile --windowed --name YD-UI --add-binary "ffmpeg/ffmpeg.exe;ffmpeg" --icon images\YD_UI_logo.ico --noconfirm yd-ui.py

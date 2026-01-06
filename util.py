@@ -18,7 +18,7 @@ def get_all_formats(yt_url, neither=False) :
     ydl_opts = {
         "ffmpeg_location": get_ffmpeg_path(),
         'quiet': True,          # like verbose = False
-        'skip_download': True   # does not download = Faster
+        'skip_download': True,   # does not download = Faster
     }
 
     # get available formats
@@ -37,18 +37,22 @@ def get_all_formats(yt_url, neither=False) :
 
     for f in formats:
 
-        audio_codec = f.get('acodec', 'none') # 'none' if no audio
-        video_codec = f.get('vcodec', 'none') # 'none' if no video
+        acodec = f.get('acodec', 'none')
+        vcodec = f.get('vcodec', 'none')
+        fps = f.get('fps', 0)
 
-        if audio_codec != 'none' and video_codec == 'none' :
+        has_audio = acodec != 'none' or fps == 0
+        has_video = vcodec != 'none'
+
+        if has_audio and not has_video :
             # audio only
             audios.append(f)
 
-        elif audio_codec == 'none' and video_codec != 'none' :
+        elif not has_audio and has_video :
             # video only
             videos.append(f)
 
-        elif audio_codec != 'none' and video_codec != 'none' :
+        elif has_audio and has_video :
             #audiovisual
             audiovisuals.append(f)
 
@@ -63,7 +67,6 @@ def get_all_formats(yt_url, neither=False) :
         return audios, videos, audiovisuals, neithers
     else :
         return audios, videos, audiovisuals
-
 
 def download(yt_url, audio_id, video_id, out_format='mp4', out_name_template=os.path.join(DOWNLOADS_FOLDER, '%(title)s.%(ext)s'))  :
 

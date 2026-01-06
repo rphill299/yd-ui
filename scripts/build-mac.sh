@@ -1,2 +1,15 @@
-pyinstaller --onedir --windowed --add-binary "ffmpeg:ffmpeg" yd-ui.py
-hdiutil create -volname "yd-ui" -srcfolder dist/yd-ui.app -srcfolder dist/yd-ui -ov -format UDZO dist/yd-ui.dmg
+# must have yd-ui environment activated
+
+# build app
+pyinstaller --onefile --windowed --name YD-UI --add-binary "ffmpeg:ffmpeg" --icon images/YD_UI_logo.icns --noconfirm yd-ui.py
+
+# prepare DMG folder
+TMP_DMG_DIR=$(mktemp -d) # create tmp dir with random name
+cp -R "dist/YD-UI.app" "$TMP_DMG_DIR"
+ln -s /Applications "$TMP_DMG_DIR/Applications"
+
+#create dmg
+hdiutil create -volname "YD-UI" -srcfolder "$TMP_DMG_DIR" -ov -format UDZO dist/YD-UI.dmg
+
+# remove tmp dir
+rm -rf "$TMP_DMG_DIR"

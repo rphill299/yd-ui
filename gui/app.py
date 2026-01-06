@@ -12,7 +12,8 @@ def get_and_clean_url(url_entry) :
 
 def run(splash) :
     def format_label(f):
-        fmt_id = f.get('format_id', '???')
+        format = f.get('format')
+        format_id = f.get('format_id')
         ext = f.get('ext', '???')
         vcodec = f.get('vcodec')
         acodec = f.get('acodec')
@@ -22,10 +23,10 @@ def run(splash) :
 
         if vcodec and vcodec != 'none':
             # Video format
-            return f"{resolution.split('x')[1]}p {ext} ({vcodec}) ({fmt_id})"
+            return f"{format_id} - {resolution.split('x')[1]}p {ext}\t({vcodec})"
         else:
             # Audio format
-            return f"{abr} kb/s {ext} ({acodec}) ({fmt_id})"
+            return f"{format} - {ext}"
 
     def click_load():
         url = get_and_clean_url(url_entry)
